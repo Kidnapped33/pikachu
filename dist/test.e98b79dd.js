@@ -134,61 +134,74 @@ var _css = _interopRequireDefault(require("./css.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var n = 1;
-demo.innerText = _css.default.substr(0, n);
-demo2.innerHTML = _css.default.substr(0, n);
-var time = 50;
+var player = {
+  id: undefined,
+  time: 50,
+  ui: {
+    demo: document.querySelector('#demo'),
+    demo2: document.querySelector('#demo2')
+  },
+  events: {
+    '#btnPause': 'pause',
+    '#btnPlay': 'play',
+    '#btnSlow': 'slow',
+    '#btnNormal': 'normal',
+    '#btnFast': 'fast'
+  },
+  n: 1,
+  init: function init() {
+    player.ui.demo.innerText = _css.default.substr(0, player.n);
+    player.ui.demo2.innerHTML = _css.default.substr(0, player.n);
+    player.bindEvents();
+    player.play();
+  },
+  bindEvents: function bindEvents() {
+    // document.querySelector('#btnPause').onclick = player.pause,
+    for (var key in player.events) {
+      if (player.events.hasOwnProperty(key)) {
+        var value = player.events[key];
+        document.querySelector(key).onclick = player[value];
+      }
+    }
+  },
+  // const run = () 
+  run: function run() {
+    player.n += 1;
 
-var run = function run() {
-  n += 1;
+    if (player.n > _css.default.length) {
+      window.clearInterval(player.id);
+      return;
+    }
 
-  if (n > _css.default.length) {
-    window.clearInterval(id);
-    return;
+    player.ui.demo.innerText = _css.default.substr(0, player.n);
+    player.ui.demo2.innerHTML = _css.default.substr(0, player.n);
+    player.ui.demo.scrollTop = player.ui.demo.scrollHeight;
+  },
+  // const play = ()
+  play: function play() {
+    player.id = setInterval(player.run, player.time);
+  },
+  // const pause = ()
+  pause: function pause() {
+    window.clearInterval(player.id);
+  },
+  slow: function slow() {
+    player.pause();
+    player.time = 100;
+    player.play();
+  },
+  normal: function normal() {
+    player.pause();
+    player.time = 50;
+    player.play();
+  },
+  fast: function fast() {
+    player.pause();
+    player.time = 0;
+    player.play();
   }
-
-  demo.innerText = _css.default.substr(0, n);
-  demo2.innerHTML = _css.default.substr(0, n);
-  demo.scrollTop = demo.scrollHeight;
-}; //设置间隔
-
-
-var play = function play() {
-  return setInterval(run, time);
 };
-
-var pause = function pause() {
-  window.clearInterval(id);
-};
-
-var id = play();
-
-btnPause.onclick = function () {
-  //解除计时器
-  pause();
-};
-
-btnPlay.onclick = function () {
-  id = play();
-};
-
-btnSlow.onclick = function () {
-  pause();
-  time = 100;
-  id = play();
-};
-
-btnNormal.onclick = function () {
-  pause();
-  time = 50;
-  id = play();
-};
-
-btnFast.onclick = function () {
-  pause();
-  time = 0;
-  id = play();
-};
+player.init();
 },{"./css.js":"css.js"}],"C:/Users/win7/AppData/Local/Yarn/Data/global/node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -217,7 +230,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51809" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50394" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
